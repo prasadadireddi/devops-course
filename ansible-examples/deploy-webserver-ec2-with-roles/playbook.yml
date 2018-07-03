@@ -1,0 +1,16 @@
+# Configure EC2 Instances and deploy Apache
+
+- name: provision instance for Apache
+  hosts: localhost
+  connection: local
+  remote_user: ec2-user
+  gather_facts: false
+  roles:
+    - create_ec2
+
+- name: Install Apache
+  hosts: deploy
+  remote_user: ec2-user
+  become: yes
+  roles:
+    - deploy_apache

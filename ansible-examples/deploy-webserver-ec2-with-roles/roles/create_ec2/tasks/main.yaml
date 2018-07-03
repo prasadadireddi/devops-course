@@ -1,0 +1,31 @@
+---
+# This role launches AWS EC2 instances
+
+- name: Launching an EC2 Instance
+  local_action: ec2
+                aws_access_key={{ aws_access_key }}
+                aws_secret_key={{ aws_secret_key }}
+                group={{ security_group }}
+                instance_type={{ instance_type }}
+                image={{ image }}
+                region={{ region }}
+                wait=true
+                keypair={{ keypair }}
+                count={{ instance_count }}
+                vpc_subnet_id={{ vpc_subnet_id }}
+                assign_public_ip=yes
+  register: ec2
+
+- name: Wait for SSH to come up
+  wait_for:
+        host: "{{ item.public_dns_name }}"
+        port: 22
+        delay: 60
+        timeout: 320
+        state: started
+  with_items: "{{ ec2.instances }}"
+
+- name: Add new instances to host group
+  add_host: hostname="{{ item.public_ip }}" groupname=deploy
+  with_items: "{{ ec2.instances }}"
+

@@ -1,0 +1,14 @@
+---
+# Variables here are applicable to all host groups
+
+# AWS specific variables
+aws_access_key:
+aws_secret_key:
+keypair: 
+vpc_subnet_id: 
+region: 
+image: ami-7d95b612
+instance_type: t2.micro
+security_group: default
+instance_count: 1
+wait_for_port: 22

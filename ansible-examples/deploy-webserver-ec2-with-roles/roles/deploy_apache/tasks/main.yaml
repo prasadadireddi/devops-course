@@ -1,0 +1,15 @@
+---
+# This role deploys Apache Http server to insatnces
+
+- name: Install NTP Server
+  yum: pkg=ntp state=latest
+
+- name: Ensure NTP is up and running
+  service: name=ntpd state=started
+
+- name: Install Apache Web Server
+  yum: pkg=httpd state=latest
+
+- name: Ensure httpd is up and running
+  service: name=httpd state=started
+
